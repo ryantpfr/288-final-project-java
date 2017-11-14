@@ -8,14 +8,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-public class DS4Reader {
+public class ControllerReader {
 	
 	Process process;
 	InputStream inStream;
 	//Scanner scan;
 	BufferedReader input;
 	
-	public DS4Reader() throws IOException {
+	public ControllerReader() throws IOException {
 		ProcessBuilder pb = new ProcessBuilder("cygread.bat");
 		File f = new File("out.txt");
 		pb.redirectOutput(f);
@@ -37,6 +37,27 @@ public class DS4Reader {
 	public void stop() throws IOException {
 		process.destroy();
 		Runtime.getRuntime().exec("taskkill /F /IM explore.exe");
+	}
+
+	public void readLast() throws IOException {
+		String line = null;
+		String nextLine;
+		while ((nextLine = input.readLine()) != null) {
+			line = nextLine;
+		}
+		
+		if(line.matches("U:.*") || line.equals("")){
+			System.out.println(line);
+			return;
+		}
+		//System.out.println(line);
+		
+		Scanner scan = new Scanner(line);
+		
+		scan.useDelimiter(",\\s*|\\s+");
+		scan.nextInt();scan.nextInt();scan.nextInt();
+		System.out.println(scan.nextInt());
+		scan.close();
 	}
 	
 }
