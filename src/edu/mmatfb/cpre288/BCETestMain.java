@@ -18,10 +18,6 @@ public class BCETestMain {
 
         sendGroupFromThreadIn100ms(bce,2,30,11);
 
-//        for(int i = 0; i < 6; i++){
-//            sendGroupFromThreadIn100ms(bce,1,2,3,6);
-//        }
-
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
