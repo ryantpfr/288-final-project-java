@@ -49,10 +49,6 @@ public class BufferedCommandExecutor {
 
     private void respondTo1(){
 
-        //long t= System.currentTimeMillis();
-        //long end = t+1000; //waste time
-        //while(System.currentTimeMillis() < end);
-
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {

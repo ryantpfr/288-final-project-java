@@ -8,9 +8,13 @@ public class DS4ReaderMain {
 		
 		DS4Reader reader = new DS4Reader();
 		
-		Thread.sleep(200);
+		long start = System.currentTimeMillis();
 		
-		//reader.read();
+		while(System.currentTimeMillis() - start < 3000){
+			reader.read();
+		}
+		
+		reader.stop();
 		
 	}
 

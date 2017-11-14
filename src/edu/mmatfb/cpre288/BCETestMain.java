@@ -11,12 +11,12 @@ public class BCETestMain {
         bce.read((byte) 6);
         bce.read((byte) 7);
         
-//        sendFromThreadIn100ms(bce,1);
-//        sendFromThreadIn100ms(bce,7);
-//        sendFromThreadIn100ms(bce,3);
-//        sendFromThreadIn100ms(bce,5);
-//
-//        sendGroupFromThreadIn100ms(bce,2,3,6);
+        sendFromThreadIn100ms(bce,1);
+        sendFromThreadIn100ms(bce,7);
+        sendFromThreadIn100ms(bce,3);
+        sendFromThreadIn100ms(bce,5);
+
+        sendGroupFromThreadIn100ms(bce,2,30,11);
 
 //        for(int i = 0; i < 6; i++){
 //            sendGroupFromThreadIn100ms(bce,1,2,3,6);

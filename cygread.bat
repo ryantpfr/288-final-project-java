@@ -1,2 +1,2 @@
 set PATH=C:\cygwin64\bin;%PATH%
-C:\cygwin64\bin\bash.exe U:\cpre288-java\288-final-project-embedded\cyg.sh
+C:\cygwin64\bin\bash.exe "U:\CPRE288\Final\Workspace\final project\cyg.sh"
