@@ -1,4 +1,4 @@
-package edu.mmatfb.cpre288;
+package edu.mmatfb.controller;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package markGUI;
+package edu.mmatfb.cpre288.markGUI;
 
 import java.awt.Color;
 import java.awt.Frame;
@@ -10,23 +10,22 @@ import javax.swing.JFrame;
 public class GuiUpdater {
 
 
-	private JFrame frame;
-	private Graphics graphics;
-	
+	private JFrame frame;	
 	
 	public GuiUpdater(JFrame frame){
 		this.frame = frame;
 		
-		frame.
-		this.graphics = frame.getGraphics();
-		
 		frame.setVisible(true);
 		frame.setSize(600, 600);
 		
-		System.out.println(graphics);
+		//CustomPannel customPannel = new CustomPannel();
 		
-		graphics.setColor(Color.CYAN);
-		graphics.fillOval(300, 300, 50, 50);
+		//frame.add(customPannel);
+		
+//		System.out.println(graphics);
+//		
+//		graphics.setColor(Color.CYAN);
+//		graphics.fillOval(300, 300, 50, 50);
 	}
 	
 	public void start(){
@@ -38,6 +37,7 @@ public class GuiUpdater {
 				e.printStackTrace();
 			}
 			
+			System.out.println("updated graphics");
 			
 			updateGraphics();
 		}

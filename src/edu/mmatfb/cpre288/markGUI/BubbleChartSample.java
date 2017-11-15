@@ -1,4 +1,4 @@
-package markGUI;
+package edu.mmatfb.cpre288.markGUI;
 /*package gui;
 
 import javafx.application.Application;

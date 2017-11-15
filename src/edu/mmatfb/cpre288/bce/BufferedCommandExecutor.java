@@ -1,4 +1,4 @@
-package edu.mmatfb.cpre288;
+package edu.mmatfb.cpre288.bce;
 
 import java.util.Arrays;
 import java.util.Collections;

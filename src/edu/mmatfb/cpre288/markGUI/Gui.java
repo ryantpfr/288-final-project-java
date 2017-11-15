@@ -1,4 +1,4 @@
-package markGUI;
+package edu.mmatfb.cpre288.markGUI;
 
 import java.awt.EventQueue;
 import java.awt.Graphics;
