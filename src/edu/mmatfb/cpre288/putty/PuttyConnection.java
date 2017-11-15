@@ -67,13 +67,16 @@ public class PuttyConnection {
 	
 	private class ReaderThread extends Thread{
 		
-		private byte[] buffer = new byte[10];
+		public static final int BUFFER_SIZE = 10;
+		public static final int SLEEP_MS = 5;
+		
+		private byte[] buffer = new byte[BUFFER_SIZE];
 		
 		@Override
 		public void run(){
 			while(true){
 				try {
-					Thread.sleep(5);
+					Thread.sleep(SLEEP_MS);
 					readOutput();
 				} catch (InterruptedException | IOException e) {
 					e.printStackTrace();
@@ -85,6 +88,9 @@ public class PuttyConnection {
 			int read = in.read(buffer);
 			for(int i = 0; i < read; i++){
 				onRecieve.onRecieve(buffer[i]);
+			}
+			if(read == BUFFER_SIZE){
+				readOutput();
 			}
 		}
 	}

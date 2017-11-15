@@ -6,16 +6,18 @@ public class PuttyConnectionMain {
 
 	public static void main(String[] args){
 		try {
-			PuttyConnection puttyConnection = new PuttyConnection( c -> System.out.println((char) c));
+			PuttyConnection puttyConnection = new PuttyConnection( c -> System.out.print((char) c));
 			
 			Thread.sleep(100);
 			
-			for(char c : "hello Ryan, I am communicating with you".toCharArray()){
-				Thread.sleep(6);
-				puttyConnection.write((byte) c);
-			}
+			puttyConnection.write((byte) 'c');
 			
-			Thread.sleep(100);
+//			for(char c : "hello Ryan, I am communicating with you".toCharArray()){
+//				Thread.sleep(6);
+//				puttyConnection.write((byte) c);
+//			}
+			
+			Thread.sleep(30000);
 			
 			puttyConnection.stop();
 			
