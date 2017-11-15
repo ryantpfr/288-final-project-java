@@ -15,13 +15,17 @@ public class PuttyConnection {
 	private Process process;
 	private InputStream in;
 	private OutputStream out;
+	private OnRecieve onRecieve;
 	
-	public PuttyConnection() throws IOException{
-
+	public PuttyConnection(OnRecieve onRecieve) throws IOException{
+		this.onRecieve = onRecieve;
+		
 		this.initProcess();
 		
 		in = process.getInputStream();
 		out= process.getOutputStream();
+		
+		this.startReader();
 	}
 	
 	private void initProcess() throws IOException{
@@ -39,6 +43,8 @@ public class PuttyConnection {
 		pb.redirectError(f);
 		
 		process = pb.start();
+		
+		
 	}
 	
 	public void write(byte... bytes){
@@ -50,14 +56,36 @@ public class PuttyConnection {
 		}
 	}
 	
-	
-	
 	public void stop(){
-		
 		process.destroy();
-		
-		
 	}
 	
+	private void startReader(){
+		ReaderThread readerThread = new ReaderThread();
+		readerThread.start();
+	}
 	
+	private class ReaderThread extends Thread{
+		
+		private byte[] buffer = new byte[10];
+		
+		@Override
+		public void run(){
+			while(true){
+				try {
+					Thread.sleep(5);
+					readOutput();
+				} catch (InterruptedException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		private void readOutput() throws IOException{
+			int read = in.read(buffer);
+			for(int i = 0; i < read; i++){
+				onRecieve.onRecieve(buffer[i]);
+			}
+		}
+	}
 }
