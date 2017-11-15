@@ -9,27 +9,36 @@ import java.util.List;
 
 public class PuttyConnection {
 
-	public static final String PROFILE_NAME = "test";
+	public static final String PUTTY_SETTINGS_NAME = "wifi";
+	public static final String ERROR_OUTPUT_FILENAME = "puttyError.txt";
 	
 	private Process process;
 	private InputStream in;
 	private OutputStream out;
 	
 	public PuttyConnection() throws IOException{
+
+		this.initProcess();
+		
+		in = process.getInputStream();
+		out= process.getOutputStream();
+	}
+	
+	private void initProcess() throws IOException{
 		List<String> commands = new ArrayList<String>();
 		commands.add("\"C:\\Program Files\\PuTTY\\plink.exe\"");
-		commands.add(" -v");
+		commands.add("-load"); commands.add(PUTTY_SETTINGS_NAME);
+//		commands.add("-raw");
+//		commands.add("-P"); commands.add("42880");
+//		commands.add("192.168.1.1");
 		
 		ProcessBuilder pb = new ProcessBuilder(commands);
-		File f = new File("puttyOut.txt");
+		
+		File f = new File(ERROR_OUTPUT_FILENAME);
 		//pb.redirectOutput(f);
 		pb.redirectError(f);
 		
 		process = pb.start();
-		
-		in = process.getInputStream();
-		out= process.getOutputStream();
-		
 	}
 	
 	public void write(byte... bytes){

@@ -8,7 +8,14 @@ public class PuttyConnectionMain {
 		try {
 			PuttyConnection puttyConnection = new PuttyConnection();
 			
-			Thread.sleep(3000);
+			Thread.sleep(100);
+			
+			for(char c : "hello Ryan, I am communicating with you".toCharArray()){
+				Thread.sleep(500);
+				puttyConnection.write((byte) c);
+			}
+			
+			Thread.sleep(100);
 			
 			puttyConnection.stop();
 			
