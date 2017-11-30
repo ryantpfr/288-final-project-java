@@ -68,7 +68,7 @@ public class PuttyConnection {
 	private class ReaderThread extends Thread{
 		
 		public static final int BUFFER_SIZE = 10;
-		public static final int SLEEP_MS = 5;
+		public static final int SLEEP_MS = 7;
 		
 		private byte[] buffer = new byte[BUFFER_SIZE];
 		
