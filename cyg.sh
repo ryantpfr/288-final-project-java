@@ -1,4 +1,4 @@
 # should eventually run ds4rd.exe
 #!/bin/bash
 cd u:/CPRE288/Workspace
- ./explore.exe -r 9600 -p com31 -b -j
+ ./explore.exe -r 9600 -p com26 -b -j

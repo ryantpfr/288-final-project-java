@@ -112,7 +112,8 @@ public class ControllerReader {
 	
 	public void respondToReading(){
 		if(last == null){
-			throw new IllegalStateException("must have at least one reading before execution");
+			System.out.println("must have at least one reading before execution");
+			//throw new IllegalStateException("must have at least one reading before execution");
 		}
 		
 		if(current.vertJ < -300 && last.vertJ > -300){
