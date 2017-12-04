@@ -1,4 +1,4 @@
-package edu.mmatfb.cpre288.markGUI;
+package edu.mmatfb.cpre288.GUI;
 
 public class DataObject {
     private int x;

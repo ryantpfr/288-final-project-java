@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import edu.mmatfb.cpre288.markGUI.ChartController;
-import edu.mmatfb.cpre288.markGUI.DataObject;
+import edu.mmatfb.cpre288.GUI.ChartController;
+import edu.mmatfb.cpre288.GUI.DataObject;
 
 public class BufferedCommandExecutor {
 
@@ -86,30 +86,29 @@ public class BufferedCommandExecutor {
     private void respondTo4(){
         System.out.println("starting scan");
         
-        chartController.clear();
+        chartController.scanClear();
     }
     
     private void respondTo5(){
-    	byte b1 = queue.remove();
-        byte b2 = queue.remove();
-        byte b3 = queue.remove();
-        byte b4 = queue.remove();
+    	int b1 = unsign(queue.remove());
+        int b2 = unsign(queue.remove());
+        int b3 = unsign(queue.remove());
+        int b4 = unsign(queue.remove());
     	
-        int angle = Math.abs(b1);
-        int size = Math.abs(( (((int)b2) <<8)+b3));
-        int dist = Math.abs((b4 << 2));
-        int x =  (int) (Math.cos(Math.toRadians(angle)) * dist);
-        int y =  (int) (Math.sin(Math.toRadians(angle)) * dist);
+        double theta = Math.toRadians(b2-b1);
+        double midAngle = (Math.toRadians(b2) - theta/2);
+        int dist = (b3 << 8) + b4;
+        int size = (int) (dist * Math.tan(theta/2));
+        int x = (int) (dist * Math.cos(midAngle));
+        int y = (int) (dist * Math.sin(midAngle));
         
-        //System.out.println("cos of angle " + );
-        
-        System.out.println("found an object at" + " angle " + angle+ " with size " + size+ " and dist " + dist);
-        
+        System.out.println("found an object from degrees "+ b1 + " to " + b2 + " with mid distance " + dist);
+        System.out.println("size = " + size);
         
         if(chartController != null){
         	System.out.println("displaying data obj at point ("+x+","+y+") with size " + size);
         	DataObject data = new DataObject(x,y,size);
-            chartController.update(data);
+            chartController.scanUpdate(data);
         }
        
     }
@@ -123,5 +122,10 @@ public class BufferedCommandExecutor {
         }
         throw new IllegalStateException("Invalid command byte");
     }
+    
+    public static int unsign(byte b) {
+        return b & 0xFF;
+      }
+
 
 }

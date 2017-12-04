@@ -2,25 +2,29 @@ package edu.mmatfb.cpre288.core;
 
 import java.io.IOException;
 
+import edu.mmatfb.cpre288.GUI.ChartController;
 import edu.mmatfb.cpre288.controller.ControllerReader;
 import edu.mmatfb.cpre288.putty.PuttyConnection;
 
 public class App {
 
-	public static void main(String[] args) {
+	
+	public static void run(ChartController chartController) {
 		// TODO Auto-generated method stub
 		ControllerReader reader = null;
 		try{
-			PuttyConnection puttyConnection = new PuttyConnection( c -> System.out.print((char) c));
-			
-			Thread.sleep(200);
-			puttyConnection.write((byte) 'c'); //send connection byte
+			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController);
+			PuttyConnection puttyConnection = new PuttyConnection(bce::read);
 			
 			reader = new ControllerReader(puttyConnection);
-		
-			long start = System.currentTimeMillis();
 			
-			while(System.currentTimeMillis() - start < 30000){
+			
+			System.out.println("setup complete");
+			
+			
+			
+			
+			while(true){
 				Thread.sleep(10);
 				reader.readLast();
 				reader.respondToReading();

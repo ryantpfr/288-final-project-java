@@ -2,3 +2,7 @@
 U:\cpre288-java\288-final-project-embedded>set PATH=C:\cygwin64\bin;C:/Program Files/Java/jre1.8.0_131/bin/server;C:/Program Files/Java/jre1.8.0_131/bin;C:/Program Files/Java/jre1.8.0_131/lib/amd64;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\PuTTY\;C:\Program Files (x86)\Box\Box Edit\;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;C:\Program Files\MATLAB\R2017a\runtime\win64;C:\Program Files\MATLAB\R2017a\bin;C:\Program Files\doxygen\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\Pico Technology\PicoScope6\;C:\Program Files\IVI Foundation\VISA\Win64\bin;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\ktvisa;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\bin;C:\Program Files (x86)\IVI Foundation\IVI\bin;C:\Program Files\IVI Foundation\IVI\bin;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin\;C:\Program Files\IVI Foundation\VISA\Win64\Bin\;C:\Program Files (x86)\IVI Foundation\VISA\winnt\agvisa;C:\Program Files\TortoiseSVN\bin;C:\Users\rtoepfer\AppData\Local\Microsoft\WindowsApps;;C:\Eclipse\eclipse-java\eclipse; 
 
 U:\cpre288-java\288-final-project-embedded>C:\cygwin64\bin\bash.exe "U:\cpre288-java\288-final-project-embedded\cyg.sh" 
+Serial port not found
+Error getting state of comm port
+Error setting comm port params
+Error with given port

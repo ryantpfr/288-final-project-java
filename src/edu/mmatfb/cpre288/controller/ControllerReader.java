@@ -116,24 +116,42 @@ public class ControllerReader {
 			//throw new IllegalStateException("must have at least one reading before execution");
 		}
 		
-		if(current.vertJ < -300 && last.vertJ > -300){
-			putty.write((byte) 0,(byte) 100);
+		if(current.vertJ < -300 && last.vertJ > -300){ //go forward
+			putty.write((byte) 1);
 			System.out.println("!! sent go command, speed 100 !!");
 		}
-		if(current.vertJ > -300 && last.vertJ < -300){
-			putty.write((byte) 0,(byte) 0);
+		if(current.vertJ > -300 && last.vertJ < -300){ // stop from forward
+			putty.write((byte) 6);
 			System.out.println("!! sent go command, speed 0 !!");
 		}
-		if(current.vertJ > 300 && last.vertJ < 300){
-			putty.write((byte) 0,(byte) 0);
+		if(current.vertJ > 300 && last.vertJ < 300){ // reverse
+			putty.write((byte) 2);
 			System.out.println("!! sent go command, speed -100 !!");
 		}
-		if(current.vertJ < 300 && last.vertJ > 300){
-			putty.write((byte) 0,(byte) 0);
+		if(current.vertJ < 300 && last.vertJ > 300){ //stop from backwards
+			putty.write((byte) 6);
 			System.out.println("!! sent go command, speed 0 !!");
 		}
+		
+		if(current.horizJ < -300 && last.horizJ > -300){ //turn right
+			putty.write((byte) 4);
+			System.out.println("!! sent go command, speed 100 !!");
+		}
+		if(current.horizJ > -300 && last.horizJ < -300){ // stop right
+			putty.write((byte) 6);
+			System.out.println("!! sent go command, speed 0 !!");
+		}
+		if(current.horizJ > 300 && last.horizJ < 300){ // turn left
+			putty.write((byte) 3);
+			System.out.println("!! sent go command, speed -100 !!");
+		}
+		if(current.horizJ < 300 && last.horizJ > 300){ //stop from left
+			putty.write((byte) 6);
+			System.out.println("!! sent go command, speed 0 !!");
+		}
+		
 		if(current.topB && !last.topB){
-			putty.write((byte) 2);
+			putty.write((byte) 5);
 			System.out.println("!! sent scan !!");
 		}
 	}

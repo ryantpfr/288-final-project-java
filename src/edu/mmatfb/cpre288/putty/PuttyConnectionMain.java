@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.mmatfb.cpre288.GUI.ChartController;
+import edu.mmatfb.cpre288.GUI.DataObject;
 import edu.mmatfb.cpre288.core.BufferedCommandExecutor;
-import edu.mmatfb.cpre288.markGUI.ChartController;
-import edu.mmatfb.cpre288.markGUI.DataObject;
-
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 
@@ -54,7 +53,7 @@ public class PuttyConnectionMain {
 			
 			Thread.sleep(500);
 			
-			puttyConnection.write((byte) 5);
+			//puttyConnection.write((byte) 122);
 			
 			Thread.sleep(30000);
 			
@@ -65,29 +64,7 @@ public class PuttyConnectionMain {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void testChart(ChartController chartController){
-		for(int i = 0; i < 10; i++){
-			
-			List<DataObject> data = new ArrayList<>();
-			
-			chartController.clear();
-			
-			for(int i2 = 0; i2< 3; i2++){
-				data.add(new DataObject((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
-			}
-			
-		    chartController.update(data);
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-//		
-	}
+		
 	
 	
 	
