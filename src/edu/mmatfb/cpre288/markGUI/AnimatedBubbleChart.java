@@ -67,6 +67,7 @@ public class AnimatedBubbleChart extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Animated Line Chart Sample");
+        stage.setMaximized(true);
         init(stage);
         stage.show();
 
@@ -101,7 +102,7 @@ public class AnimatedBubbleChart extends Application {
         public void run() {
         	
 			PuttyConnectionMain.run(chartController);
-			
+        	//PuttyConnectionMain.testChart(chartController);
         }
     }
 
@@ -120,12 +121,17 @@ public class AnimatedBubbleChart extends Application {
 
     private void addDataToSeries() {
     	
+    	ObservableList<Data<Number, Number>> data = series2.getData();
+    	
+    	if(chartController.toClear()){
+    		data.clear();
+    		chartController.setCleared();
+    	}
+    	
     	if(!chartController.isRead()){
     		
     		System.out.println("updating chart");
         	
-    		ObservableList<Data<Number, Number>> data = series2.getData();
-    		data.clear();
     		chartController.read().stream().map(this::dataObjToChartData).forEach(data::add);
     	}
     	

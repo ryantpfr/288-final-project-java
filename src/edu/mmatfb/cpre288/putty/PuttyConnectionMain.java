@@ -48,26 +48,45 @@ public class PuttyConnectionMain {
 	public static void run(ChartController chartController){
 		try {
 			
-			BufferedCommandExecutor bce = new BufferedCommandExecutor();
+			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController);
 			
-			for(int i = 0; i < 10; i++){
-				
-				List<DataObject> data = new ArrayList<>();
-				
-				for(int i2 = 0; i2< 3; i2++){
-					data.add(new DataObject((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
-				}
-				
-			    chartController.update(data);
-				
-				Thread.sleep(1000);
-			}
+			PuttyConnection puttyConnection = new PuttyConnection(bce::read);
 			
-			//puttyConnection.stop();
+			Thread.sleep(500);
 			
-		} catch (InterruptedException e) {
+			puttyConnection.write((byte) 5);
+			
+			Thread.sleep(30000);
+			
+			puttyConnection.stop();
+			
+			
+		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void testChart(ChartController chartController){
+		for(int i = 0; i < 10; i++){
+			
+			List<DataObject> data = new ArrayList<>();
+			
+			chartController.clear();
+			
+			for(int i2 = 0; i2< 3; i2++){
+				data.add(new DataObject((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
+			}
+			
+		    chartController.update(data);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+//		
 	}
 	
 	

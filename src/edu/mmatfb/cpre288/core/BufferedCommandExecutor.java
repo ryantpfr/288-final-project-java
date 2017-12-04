@@ -5,16 +5,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import edu.mmatfb.cpre288.markGUI.ChartController;
+import edu.mmatfb.cpre288.markGUI.DataObject;
+
 public class BufferedCommandExecutor {
 
     private ConcurrentLinkedQueue<Byte> queue = new ConcurrentLinkedQueue<>();
     private volatile int unrecievedBytes = -1; //-1 == awaiting command bit
+    private ChartController chartController;
 
     //private volatile boolean busy = false;
 
     private static final List<Byte> startCharacters = Collections.unmodifiableList(Arrays.asList(new Byte("1"),new Byte("2")));
 
     public BufferedCommandExecutor(){ }
+    
+    public BufferedCommandExecutor(ChartController chartController){
+    	this.chartController = chartController;
+    }
 
     public void read(Byte b) {
     	
@@ -77,6 +85,8 @@ public class BufferedCommandExecutor {
     
     private void respondTo4(){
         System.out.println("starting scan");
+        
+        chartController.clear();
     }
     
     private void respondTo5(){
@@ -85,10 +95,22 @@ public class BufferedCommandExecutor {
         byte b3 = queue.remove();
         byte b4 = queue.remove();
     	
-        System.out.println("found an object at"
-        		+ " angle " + b1
-        		+ " with size " + ( (((int)b2) <<8)+b3)
-        		+ " and dist " + (b4 << 2));
+        int angle = Math.abs(b1);
+        int size = Math.abs(( (((int)b2) <<8)+b3));
+        int dist = Math.abs((b4 << 2));
+        int x =  (int) (Math.cos(Math.toRadians(angle)) * dist);
+        int y =  (int) (Math.sin(Math.toRadians(angle)) * dist);
+        
+        //System.out.println("cos of angle " + );
+        
+        System.out.println("found an object at" + " angle " + angle+ " with size " + size+ " and dist " + dist);
+        
+        
+        if(chartController != null){
+        	System.out.println("displaying data obj at point ("+x+","+y+") with size " + size);
+        	DataObject data = new DataObject(x,y,size);
+            chartController.update(data);
+        }
        
     }
 
