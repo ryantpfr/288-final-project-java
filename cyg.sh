@@ -1,4 +1,4 @@
 # should eventually run ds4rd.exe
 #!/bin/bash
 cd u:/cpre288-java/288-final-project-embedded
- ./explore.exe -r 9600 -p com32 -b -j
+ ./explore.exe -r 9600 -p com33 -b -j

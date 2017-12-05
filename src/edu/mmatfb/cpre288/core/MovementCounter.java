@@ -5,11 +5,11 @@ public class MovementCounter {
 	private double angle = 0;
 	private double distance = 0;
 	
-	public static final float TURN_CALIBRATION = 1.00f;
+	public static final float TURN_CALIBRATION = 1.05f;
 	public static final float DIST_CALIBRATION = 1.00f;
 	
 	public void acceptAngle(byte inAngle){
-		this.angle += inAngle*TURN_CALIBRATION;
+		this.angle += ((double) inAngle)*TURN_CALIBRATION;
 		
 		if(this.angle > 180){
 			angle -= 360;

@@ -63,6 +63,7 @@ public class BufferedCommandExecutor {
             case 2 : respondTo2(); return;
             case 4 : respondTo4(); return;
             case 5 : respondTo5(); return;
+            case 6 : respondTo6(); return;
             case 7 : respondTo7(); return;
             case 9 : respondTo9(); return;
         }
@@ -70,7 +71,26 @@ public class BufferedCommandExecutor {
     }
 
 
-    private void respondTo9() {
+    private void respondTo6() {
+    	byte b1 = queue.remove();
+    	byte b2 = queue.remove();
+		
+        EdgeDirection eDir = null;
+        switch(b1){
+        	case 0 : eDir = EdgeDirection.LEFT; break;
+        	case 1 : eDir = EdgeDirection.FRONT_LEFT; break;
+        	case 2 : eDir = EdgeDirection.FRONT_RIGHT; break;
+        	case 3 : eDir = EdgeDirection.RIGHT; break;
+        }
+    	EdgeType eType = (b2 == 0) ? EdgeType.CLIFF : EdgeType.BOUND;
+        
+        System.out.println("cliff or boundary " + b1 + " " + b2);
+        System.out.println("cliff or boundary " + eDir + " " + eType);
+        
+        chartController.edgeUpdate(eDir,eType);
+	}
+
+	private void respondTo9() {
     	byte b1 = queue.remove();
     	
     	moveCounter.acceptDistance(b1);
@@ -138,12 +158,13 @@ public class BufferedCommandExecutor {
 
     private int remainingBytesByCommand(){
         switch(queue.peek()){
-            case(1) : return 1;
-            case(2) : return 2;
-            case(4) : return 1;
-            case(5) : return 4;
-            case(7) : return 1;
-            case(9) : return 1;
+            case 1 : return 1;
+            case 2 : return 2;
+            case 4 : return 1;
+            case 5 : return 4;
+            case 6 : return 2;
+            case 7 : return 1;
+            case 9 : return 1;
         }
         throw new IllegalStateException("Invalid command byte");
     }
