@@ -7,7 +7,7 @@ public class ControllerReaderMain {
 	public static void main(String[] agrs) throws IOException, InterruptedException{
 		ControllerReader reader = null;
 		try{
-			reader = new ControllerReader(null);
+			reader = new ControllerReader(null,null);
 		
 			long start = System.currentTimeMillis();
 			while(System.currentTimeMillis() - start < 3000){

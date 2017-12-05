@@ -8,6 +8,7 @@ import java.util.List;
 import edu.mmatfb.cpre288.GUI.ChartController;
 import edu.mmatfb.cpre288.GUI.DataObject;
 import edu.mmatfb.cpre288.core.BufferedCommandExecutor;
+import edu.mmatfb.cpre288.core.MovementCounter;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 
@@ -47,7 +48,7 @@ public class PuttyConnectionMain {
 	public static void run(ChartController chartController){
 		try {
 			
-			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController);
+			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController,new MovementCounter());
 			
 			PuttyConnection puttyConnection = new PuttyConnection(bce::read);
 			

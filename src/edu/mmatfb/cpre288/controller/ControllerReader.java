@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+import edu.mmatfb.cpre288.core.MovementCounter;
 import edu.mmatfb.cpre288.putty.PuttyConnection;
 
 public class ControllerReader {
@@ -20,7 +20,11 @@ public class ControllerReader {
 	
 	private PuttyConnection putty;
 	
-	public ControllerReader(PuttyConnection putty) throws IOException {
+	private MovementCounter movementCounter;
+	
+	public ControllerReader(PuttyConnection putty,MovementCounter mc) throws IOException {
+		this.movementCounter = mc;
+		
 		ProcessBuilder pb = new ProcessBuilder("cygread.bat");
 		File f = new File("out.txt");
 		pb.redirectOutput(f);
@@ -118,41 +122,46 @@ public class ControllerReader {
 		
 		if(current.vertJ < -300 && last.vertJ > -300){ //go forward
 			putty.write((byte) 1);
-			System.out.println("!! sent go command, speed 100 !!");
+			System.out.println("!! sent go command !!");
 		}
 		if(current.vertJ > -300 && last.vertJ < -300){ // stop from forward
 			putty.write((byte) 6);
-			System.out.println("!! sent go command, speed 0 !!");
+			System.out.println("!! sent stop command !!");
 		}
 		if(current.vertJ > 300 && last.vertJ < 300){ // reverse
 			putty.write((byte) 2);
-			System.out.println("!! sent go command, speed -100 !!");
+			System.out.println("!! sent go command backwards !!");
 		}
 		if(current.vertJ < 300 && last.vertJ > 300){ //stop from backwards
 			putty.write((byte) 6);
-			System.out.println("!! sent go command, speed 0 !!");
+			System.out.println("!! sent stop command !!");
 		}
 		
 		if(current.horizJ < -300 && last.horizJ > -300){ //turn right
 			putty.write((byte) 4);
-			System.out.println("!! sent go command, speed 100 !!");
+			System.out.println("!! turning left !!");
 		}
 		if(current.horizJ > -300 && last.horizJ < -300){ // stop right
 			putty.write((byte) 6);
-			System.out.println("!! sent go command, speed 0 !!");
+			System.out.println("!! sent stop !!");
 		}
 		if(current.horizJ > 300 && last.horizJ < 300){ // turn left
 			putty.write((byte) 3);
-			System.out.println("!! sent go command, speed -100 !!");
+			System.out.println("!! turning right !!");
 		}
 		if(current.horizJ < 300 && last.horizJ > 300){ //stop from left
 			putty.write((byte) 6);
-			System.out.println("!! sent go command, speed 0 !!");
+			System.out.println("!! stop !!");
 		}
 		
 		if(current.topB && !last.topB){
 			putty.write((byte) 5);
 			System.out.println("!! sent scan !!");
+		}
+		
+		if(current.bottomB && !last.bottomB){
+			System.out.println("!! resetting distance !!");
+			movementCounter.resetDistance();
 		}
 	}
 }

@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 public class AnimatedBubbleChart extends Application {
 
     private XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-    private Series<Number, Number> angleSeries;
     
     private ChartController chartController = new ChartController();
 
@@ -37,30 +36,6 @@ public class AnimatedBubbleChart extends Application {
     
     private ExecutorService executor;
 	private  BubbleChart<Number, Number> bubbleChart;
-
-	private class RandoNum extends Number{
-
-		@Override
-		public double doubleValue() {
-			return Math.random()*1000;
-		}
-
-		@Override
-		public float floatValue() {
-			return  (float) (Math.random()*1000);
-		}
-
-		@Override
-		public int intValue() {
-			return  (int) (Math.random()*1000);
-		}
-
-		@Override
-		public long longValue() {
-			return (long) (Math.random()*1000);
-		}
-		
-	}
 	
     private void init(Stage primaryStage) {
 
@@ -98,8 +73,6 @@ public class AnimatedBubbleChart extends Application {
         
     
         initBoundarySeries();
-        
-        //series2.getData().add(new XYChart.Data<Number, Number>(300, 80,30));
 
         // Add Chart Series
         bubbleChart.getData().addAll(series1,series2);
@@ -162,9 +135,6 @@ public class AnimatedBubbleChart extends Application {
     }
     
     private void updateChart(){
-    	
-//    	bubbleChart.getData().remove(angleSeries);
-//    	bubbleChart.getData().add(angleSeries);
     	
     	addDataToSeries();
     	handleEdges();

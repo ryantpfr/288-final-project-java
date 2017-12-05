@@ -13,10 +13,12 @@ public class App {
 		// TODO Auto-generated method stub
 		ControllerReader reader = null;
 		try{
-			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController);
+			MovementCounter mc = new MovementCounter();
+			
+			BufferedCommandExecutor bce = new BufferedCommandExecutor(chartController,mc);
 			PuttyConnection puttyConnection = new PuttyConnection(bce::read);
 			
-			reader = new ControllerReader(puttyConnection);
+			reader = new ControllerReader(puttyConnection,mc);
 			
 			
 			System.out.println("setup complete");

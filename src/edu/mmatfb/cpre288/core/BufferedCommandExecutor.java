@@ -7,12 +7,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.mmatfb.cpre288.GUI.ChartController;
 import edu.mmatfb.cpre288.GUI.DataObject;
+import edu.mmatfb.cpre288.GUI.EdgeDirection;
+import edu.mmatfb.cpre288.GUI.EdgeType;
 
 public class BufferedCommandExecutor {
 
     private ConcurrentLinkedQueue<Byte> queue = new ConcurrentLinkedQueue<>();
     private volatile int unrecievedBytes = -1; //-1 == awaiting command bit
     private ChartController chartController;
+    
+    private MovementCounter moveCounter;
 
     //private volatile boolean busy = false;
 
@@ -20,13 +24,14 @@ public class BufferedCommandExecutor {
 
     public BufferedCommandExecutor(){ }
     
-    public BufferedCommandExecutor(ChartController chartController){
+    public BufferedCommandExecutor(ChartController chartController,MovementCounter moveCounter){
     	this.chartController = chartController;
+    	this.moveCounter = moveCounter;
     }
 
     public void read(Byte b) {
     	
-    	System.out.println("reading " + (int) b);
+    	//System.out.println("reading " + (int) b);
     	
         queue.add(b);
 
@@ -51,30 +56,48 @@ public class BufferedCommandExecutor {
 
     private void runCommand(){
     	
-    	System.out.println("running " + queue.peek());
+    	//System.out.println("running " + queue.peek());
     	
         switch(queue.remove()){
             case 1 : respondTo1(); return;
             case 2 : respondTo2(); return;
             case 4 : respondTo4(); return;
             case 5 : respondTo5(); return;
+            case 7 : respondTo7(); return;
+            case 9 : respondTo9(); return;
         }
         throw new IllegalStateException("Invalid command byte");
     }
 
 
-    private void respondTo1(){
+    private void respondTo9() {
+    	byte b1 = queue.remove();
+    	
+    	moveCounter.acceptDistance(b1);
+	}
 
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	private void respondTo7() {
+    	byte b1 = queue.remove();
+		
+    	moveCounter.acceptAngle(b1);
+	}
+
+	private void respondTo1(){
 
         byte b1 = queue.remove();
-        byte b2 = queue.remove();
-        byte b3 = queue.remove();
-        System.out.println(b1 + "+" + b2 + "-" + b3 + "="+(b1+b2-b3));
+        
+        EdgeDirection eDir = null;
+        if(b1 == 2){
+        	eDir = EdgeDirection.FRONT_LEFT;
+        }else if(b1 == 3){
+        	eDir = EdgeDirection.FRONT_RIGHT;
+        }else{
+        	System.out.println("recieved invalid bump direction");
+        	return;
+        }
+       
+        
+        chartController.edgeUpdate(eDir, EdgeType.BUMP);
     }
 
     private void respondTo2(){
@@ -115,10 +138,12 @@ public class BufferedCommandExecutor {
 
     private int remainingBytesByCommand(){
         switch(queue.peek()){
-            case(1) : return 3;
+            case(1) : return 1;
             case(2) : return 2;
             case(4) : return 1;
             case(5) : return 4;
+            case(7) : return 1;
+            case(9) : return 1;
         }
         throw new IllegalStateException("Invalid command byte");
     }
