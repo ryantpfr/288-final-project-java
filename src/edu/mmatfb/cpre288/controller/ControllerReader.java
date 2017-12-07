@@ -10,9 +10,17 @@ import java.util.Scanner;
 import edu.mmatfb.cpre288.core.MovementCounter;
 import edu.mmatfb.cpre288.putty.PuttyConnection;
 
+/**
+ * Class contains a process that runs a .bat file which runs a .sh file on cygwin
+ * and writes the output to a file. which is read by readLast();
+ * 
+ * 
+ * @author rtoepfer
+ */
 public class ControllerReader {
 	
 	private Process process;
+	
 	private BufferedReader input;
 	
 	private ControllerLine current = new ControllerLine();
@@ -22,6 +30,12 @@ public class ControllerReader {
 	
 	private MovementCounter movementCounter;
 	
+	/**
+	 * construct a new Controller reader.
+	 * @param putty PuttyConnection to write commands to the bot through
+	 * @param mc MovementController is used for resetting distance
+	 * @throws IOException
+	 */
 	public ControllerReader(PuttyConnection putty,MovementCounter mc) throws IOException {
 		this.movementCounter = mc;
 		
@@ -36,20 +50,20 @@ public class ControllerReader {
 		
 		this.putty = putty;
 	}
-	
-	public void read() throws IOException, InterruptedException{
-		
-		String line;
-		while ((line = input.readLine()) != null) {
-		    System.out.println(line);
-		}
-	}
 
+	/**
+	 * destroys the controller reading process
+	 * @throws IOException
+	 */
 	public void stop() throws IOException {
 		process.destroy();
 		Runtime.getRuntime().exec("taskkill /F /IM explore.exe");
 	}
-
+	
+	/**
+	 * Reads the last line written by the controller program
+	 * @throws IOException
+	 */
 	public void readLast() throws IOException {
 		last = current;
 		
@@ -73,7 +87,10 @@ public class ControllerReader {
 		//System.out.println(current);
 	}
 	
-	
+	/**
+	 * uses a scanner to parse the last line read into the controller into a ControllerLineObject
+	 * @param line
+	 */
 	private void scanLine(String line){
 		
 		current = new ControllerLine();
@@ -92,6 +109,10 @@ public class ControllerReader {
 		
 	}
 	
+	/**
+	 * private class mirrors the structure of the controller output for internal use.
+	 * @author rtoepfer
+	 */
 	private class ControllerLine{
 		private boolean topB = false;
 		private boolean rightB = false;
@@ -114,6 +135,9 @@ public class ControllerReader {
 		
 	}
 	
+	/**
+	 * performs an action based on the last result of readLastLine, such as sending a Go command to the bot
+	 */
 	public void respondToReading(){
 		if(last == null){
 			System.out.println("must have at least one reading before execution");

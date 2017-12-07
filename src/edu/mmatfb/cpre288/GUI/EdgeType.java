@@ -1,5 +1,11 @@
 package edu.mmatfb.cpre288.GUI;
 
+
+/**
+ * Specifies the type of edge the cybot hits
+ * 
+ * @author rtoepfer
+ */
 public enum EdgeType {
 	BUMP("Bump"),
 	CLIFF("Cliff"),
@@ -11,6 +17,10 @@ public enum EdgeType {
         displayName = s;
     }
     
+    /**
+     * the name that should be displayed on graph labels
+     * @return
+     */
     public String displayName(){
     	return displayName;
     }

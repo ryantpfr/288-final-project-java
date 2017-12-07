@@ -3,8 +3,17 @@ package edu.mmatfb.cpre288.GUI;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * used for testing the chart when the CyBot is not connected or a more specific input is required
+ * 
+ * AnimatedBubbleChart must be modified to call this
+ * 
+ * @author rtoepfer
+ *
+ */
 public class ChartTester {
 
+	/**used for testing the chart when the CyBot is not connected or a more specific input is required**/
 	public static void testChart(ChartController chartController){
 		try{
 			
@@ -17,12 +26,12 @@ public class ChartTester {
 			//chartController.edgeUpdate(EdgeDirection.LEFT,EdgeType.);
 			
 			for(int i = 0; i < 10; i++){
-				List<DataObject> data = new ArrayList<>();
+				List<ChartObstacle> data = new ArrayList<>();
 					
 				chartController.scanClear();
 					
 				for(int i2 = 0; i2< 3; i2++){
-					chartController.scanUpdate(new DataObject((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
+					chartController.scanUpdate(new ChartObstacle((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
 					Thread.sleep(300);
 					//data.add(new DataObject((int) (Math.random()*2000 - 1000),(int) (Math.random()*1000),200));
 				}

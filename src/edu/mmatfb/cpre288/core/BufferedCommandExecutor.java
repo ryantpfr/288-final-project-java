@@ -1,15 +1,18 @@
 package edu.mmatfb.cpre288.core;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.mmatfb.cpre288.GUI.ChartController;
-import edu.mmatfb.cpre288.GUI.DataObject;
+import edu.mmatfb.cpre288.GUI.ChartObstacle;
 import edu.mmatfb.cpre288.GUI.EdgeDirection;
 import edu.mmatfb.cpre288.GUI.EdgeType;
 
+/**
+ * made to respond to commands from the CyBot, sent serially in the format:
+ * [Command #] [Data Byte]...
+ * 
+ * @author rtoepfer
+ */
 public class BufferedCommandExecutor {
 
     private ConcurrentLinkedQueue<Byte> queue = new ConcurrentLinkedQueue<>();
@@ -18,17 +21,22 @@ public class BufferedCommandExecutor {
     
     private MovementCounter moveCounter;
 
-    //private volatile boolean busy = false;
-
-    private static final List<Byte> startCharacters = Collections.unmodifiableList(Arrays.asList(new Byte("1"),new Byte("2")));
-
     public BufferedCommandExecutor(){ }
     
+    /**
+     * constructs a new BCE
+     * @param chartController
+     * @param moveCounter can be null
+     */
     public BufferedCommandExecutor(ChartController chartController,MovementCounter moveCounter){
     	this.chartController = chartController;
     	this.moveCounter = moveCounter;
     }
-
+    
+    /**
+     * called when the BCE should respond to a byte
+     * @param b
+     */
     public void read(Byte b) {
     	
     	//System.out.println("reading " + (int) b);
@@ -38,9 +46,11 @@ public class BufferedCommandExecutor {
         respondToCharacter();
 
     }
-
+    
+    /**
+     * logic for handling multiple bytes at once
+     */
     private void respondToCharacter(){
-        Byte b = queue.peek();
         if(unrecievedBytes == -1){
             unrecievedBytes = remainingBytesByCommand();
         }else if(unrecievedBytes == 1){
@@ -53,7 +63,10 @@ public class BufferedCommandExecutor {
             unrecievedBytes--;
         }
     }
-
+    
+    /**
+     * executes a command once the full command is received
+     */
     private void runCommand(){
     	
     	//System.out.println("running " + queue.peek());
@@ -70,7 +83,9 @@ public class BufferedCommandExecutor {
         throw new IllegalStateException("Invalid command byte");
     }
 
-
+    /**
+     * accept cliff/bound sensor data in the format: [6],[Direction(0-3)],[Type(0-1)]
+     */
     private void respondTo6() {
     	byte b1 = queue.remove();
     	byte b2 = queue.remove();
@@ -84,24 +99,32 @@ public class BufferedCommandExecutor {
         }
     	EdgeType eType = (b2 == 0) ? EdgeType.CLIFF : EdgeType.BOUND;
         
-        System.out.println("cliff or boundary " + b1 + " " + b2);
         System.out.println("cliff or boundary " + eDir + " " + eType);
         
         chartController.edgeUpdate(eDir,eType);
 	}
-
+    
+    /**
+     * accepts a distance reading in the format [9],[signed distance]
+     */
 	private void respondTo9() {
     	byte b1 = queue.remove();
     	
     	moveCounter.acceptDistance(b1);
 	}
 
+    /**
+     * accepts a angle reading in the format [7],[signed angle]
+     */
 	private void respondTo7() {
     	byte b1 = queue.remove();
 		
     	moveCounter.acceptAngle(b1);
 	}
 
+    /**
+     * accepts a bump reading in the format [1],[Direction(1-2)]
+     */
 	private void respondTo1(){
 
         byte b1 = queue.remove();
@@ -119,19 +142,28 @@ public class BufferedCommandExecutor {
         
         chartController.edgeUpdate(eDir, EdgeType.BUMP);
     }
-
+	
+	/**
+	 * for testing the structure of this class
+	 */
     private void respondTo2(){
         byte b1 = queue.remove();
         byte b2 = queue.remove();
         System.out.println(b1 + "*" + b2+ "=" +(b1*b2));
     }
     
+    /**
+     * accepts a signal that a scan is starting in the format: [4]
+     */
     private void respondTo4(){
         System.out.println("starting scan");
         
         chartController.scanClear();
     }
     
+    /**
+     * accepts an Obstacle 
+     */
     private void respondTo5(){
     	int b1 = unsign(queue.remove());
         int b2 = unsign(queue.remove());
@@ -150,12 +182,16 @@ public class BufferedCommandExecutor {
         
         if(chartController != null){
         	System.out.println("displaying data obj at point ("+x+","+y+") with size " + size);
-        	DataObject data = new DataObject(x,y,size);
+        	ChartObstacle data = new ChartObstacle(x,y,size);
             chartController.scanUpdate(data);
         }
        
     }
 
+    /**
+     * returns the number of bytes remaining by command number
+     * @return
+     */
     private int remainingBytesByCommand(){
         switch(queue.peek()){
             case 1 : return 1;
@@ -169,6 +205,11 @@ public class BufferedCommandExecutor {
         throw new IllegalStateException("Invalid command byte");
     }
     
+    /**
+     * converts signed byte into an integer containing the byte's unsigned value
+     * @param b
+     * @return
+     */
     public static int unsign(byte b) {
         return b & 0xFF;
       }

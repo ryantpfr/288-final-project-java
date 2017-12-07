@@ -16,7 +16,10 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.stage.Stage;
 
-
+/**
+ * JavaFX bubble chart to display scanner readings and the bump and cliff and edge sensors
+ * @author rtoepfer
+ */
 public class AnimatedBubbleChart extends Application {
 
     private XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
@@ -32,11 +35,16 @@ public class AnimatedBubbleChart extends Application {
     private long frontRightExpiry = 0;
     private long rightExpiry = 0;
     
+    /** the amount of time an edge should be displayed display **/
     public static final long EDGE_DISPLAY_TIME = 3000;
     
     private ExecutorService executor;
 	private  BubbleChart<Number, Number> bubbleChart;
 	
+	/**
+	 * initializes the cleared stage
+	 * @param primaryStage
+	 */
     private void init(Stage primaryStage) {
 
     	final NumberAxis xAxis = new NumberAxis(-1000, 1000, 10);
@@ -80,10 +88,12 @@ public class AnimatedBubbleChart extends Application {
         primaryStage.setScene(new Scene(bubbleChart));
     }
 
-
+    /**
+     * runs the entire program
+     */
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Animated Line Chart Sample");
+        stage.setTitle("288 GUI");
         stage.setMaximized(true);
         init(stage);
         stage.show();
@@ -103,27 +113,22 @@ public class AnimatedBubbleChart extends Application {
         //-- Prepare Timeline
         prepareTimeline();
         
-        
-        runOtherThread();
     }
-
-    private void runOtherThread() {
-		
-    	new Thread(){
-    		
-    	}.start();
-		
-	}
-
+    
+    
+    /**
+     * allows you to specify running the main application or chart tests with un-commenting
+     * @author rtoepfer
+     */
 	private class RestOfApplication implements Runnable {
         public void run() {
 			//PuttyConnectionMain.run(chartController);
-        	//ChartTester.testChart(chartController);
+        	//.testChart(chartController);
 			App.run(chartController);
         }
     }
 
-    //-- Timeline gets called in the JavaFX Main thread
+    /**Timeline gets called in the JavaFX Main thread*/
     private void prepareTimeline() {
         // Every frame to take any data from queue and add to chart
         new AnimationTimer() {
@@ -134,12 +139,18 @@ public class AnimatedBubbleChart extends Application {
         }.start();
     }
     
+    /**
+     * updates chart based on the controller
+     */
     private void updateChart(){
     	
     	addDataToSeries();
     	handleEdges();
     }
     
+    /**
+     * updates the edges on the chart
+     */
     private void handleEdges(){
     	
     	long currentTime = System.currentTimeMillis();
@@ -147,7 +158,11 @@ public class AnimatedBubbleChart extends Application {
     	setEdges(currentTime);
     	expireEdges(currentTime);
     }
-
+    
+    /**
+     * sets new edges on the chart
+     * @param currentTime
+     */
     private void setEdges(long currentTime) {
 		if(chartController.hasEdgeUpdates()){
 			
@@ -179,12 +194,20 @@ public class AnimatedBubbleChart extends Application {
 		}
 	}
     
+    /**
+     * adds a series to the chart if it doesn't exist already
+     * @param series
+     */
     private void addSeriesIfMissing(XYChart.Series<Number,Number> series){
 		if(!bubbleChart.getData().contains(series)){
 			bubbleChart.getData().add(series);
 		}
     }
     
+    /**
+     * removes edges after they have been displayed for the specified amount of time
+     * @param currentTime
+     */
     private void expireEdges(long currentTime){
     	if(leftExpiry < currentTime){
     		bubbleChart.getData().remove(left);
@@ -200,7 +223,9 @@ public class AnimatedBubbleChart extends Application {
     	}
     }
 
-
+    /**
+     * adds the new scan results to the chart
+     */
 	private void addDataToSeries() {
     	
     	ObservableList<Data<Number, Number>> data = series2.getData();
@@ -214,21 +239,33 @@ public class AnimatedBubbleChart extends Application {
     		
     		System.out.println("updating chart");
         	
-    		chartController.scanRead().stream().map(this::dataObjToChartData).forEach(data::add);
+    		chartController.scanRead().stream().map(this::dataObsToChartData).forEach(data::add);
     	}
     	
     	series2.getData();
 
     }
 
+	/**
+	 * launches the application
+	 * @param args
+	 */
     public static void main(String[] args) {
         launch(args);
     }
     
-    private XYChart.Data<Number, Number> dataObjToChartData(DataObject dataObject){
+    /**
+     * converts an application specific ChartObstacle into an FX data point
+     * @param dataObject
+     * @return
+     */
+    private XYChart.Data<Number, Number> dataObsToChartData(ChartObstacle dataObject){
         return new XYChart.Data<Number, Number>(dataObject.getX(),dataObject.getY(),dataObject.getRadius());
     }
     
+    /**
+     * builds the series displayed when there is a boundary
+     */
     private void initBoundarySeries(){
     	
     	//frontRight.getNode().lookup(".chart-series-line").setStyle(BLACK);

@@ -1,11 +1,21 @@
 package edu.mmatfb.cpre288.GUI;
 
-public class DataObject {
+/**
+ * Internally holds the x, y, and radius of a scanned object to be sent to the AnimatedBubbleChart
+ * 
+ * @author rtoepfer
+ */
+public class ChartObstacle {
     private int x;
     private int y;
     private int radius;
 
-    public DataObject(int x, int y, int radius)
+    /**
+     * @param x
+     * @param y
+     * @param radius
+     */
+    public ChartObstacle(int x, int y, int radius)
     {
         this.x = x;
         this.y = y;
